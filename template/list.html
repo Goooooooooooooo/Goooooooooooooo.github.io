@@ -1,0 +1,59 @@
+
+          <div class="section-area">
+              <div class="section-content">
+                <div class="container">
+                  <div class="mx-auto">
+                    <div class="section_title mb-4 text-center">
+                      <h2><span class="text-white">Blog</span></h2>
+                      <p class="section_subtitle mx-auto text-light">
+                          记录代码搬运生涯踩过的坑
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    {{ each list value index }}
+                      <div class="col-lg-6 col-12">
+                        <div class="blog-box">
+                          <div class="blog-icon-box rounded-circle">
+                            <p>{{index+1}}</p><i class="mdi mdi-camera-outline rounded-circle"></i>
+                          </div>
+                          <div class="blog-content">
+                            <h3>{{value.title}}</h3>
+                            <p>{{value.summary}}</p>
+                          </div>
+                            <a href="#detail_{{value.id}}" class="blog-btn" onclick="gotoDetailPage(this,{{value.id}})" >Read More</a>
+                        </div>
+                      </div>
+                    {{ /each }}
+                        <div class="col-12">
+                          <nav class="blog-pagination">
+                            <ul class="pagination">
+                              <li>
+                              {{ if page_number == 0  }}
+                                <a href="javascript:void(0);" class="disabled" title="first page"><span aria-hidden="true">← </span>Prev</a>
+                              {{ else }}
+                                <a onclick="getPaginator(this, {{page_number-1}})" class="disabled" title="first page"><span aria-hidden="true">← </span>Prev</a>
+                              {{ /if }}
+                              </li>
+            
+                              {{ each paginator value index }}
+                                <li>
+                                    <a onclick="getPaginator(this, {{index}})" class="{{ if page_number == index }}page-active{{ /if }}">{{index+1}}</a>
+                                </li>
+                              {{ /each }}
+                              <li>
+                              {{ if page_number+1 == paginator.length  }}
+                                <a href="javascript:void(0);" class="disabled" title="Last Page">Next<span aria-hidden="true"> →</span></a>
+                              {{ else }}
+                                <a onclick="getPaginator(this, {{page_number+1}})" title="Last Page">Next<span aria-hidden="true"> →</span></a>
+                              {{ /if }}
+                              </li>
+                            </ul>
+                        </nav>
+                        <div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
