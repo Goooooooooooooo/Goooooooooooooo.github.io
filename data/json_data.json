@@ -1,7 +1,7 @@
 [
-  { "id": 1, "title": "ajax获取本地文件", "date": "12/1/2020", "author": "OK.", "summary":"ajax获取本地json文件的两种方式", "file": "_posts/2020-07-01-ajax获取本地文件.md" },
-  { "id": 2, "title": "welcome-to-jekyll", "date": "12/1/2020", "author": "OK.", "summary":"", "file": "_posts/2020-07-01-welcome-to-jekyll.md" },
-  { "id": 3, "title": "Demo3", "date": "12/1/2020", "author": "OK.", "summary":"ajax获取本地json文件的两种方式", "file": "_posts/2020-07-01-ajax获取本地文件.md" },
-  { "id": 4, "title": "Demo4", "date": "12/1/2020", "author": "OK.", "summary":"", "file": "_posts/2020-07-01-welcome-to-jekyll.md" },
-  { "id": 6, "title": "Demo4", "date": "12/1/2020", "author": "OK.", "summary":"", "file": "_posts/2020-07-01-welcome-to-jekyll.md" }
+  { "id": 1, "title": "ajax获取本地文件", "date": "12/1/2020", "author": "OK.", "summary":"ajax获取本地json文件的两种方式", "file": "posts/2020-07-01-ajax获取本地文件.md" },
+  { "id": 2, "title": "welcome-to-jekyll", "date": "12/1/2020", "author": "OK.", "summary":"", "file": "posts/2020-07-01-welcome-to-jekyll.md" },
+  { "id": 3, "title": "Demo3", "date": "12/1/2020", "author": "OK.", "summary":"ajax获取本地json文件的两种方式", "file": "posts/2020-07-01-ajax获取本地文件.md" },
+  { "id": 4, "title": "Demo4", "date": "12/1/2020", "author": "OK.", "summary":"", "file": "posts/2020-07-01-welcome-to-jekyll.md" },
+  { "id": 6, "title": "Demo4", "date": "12/1/2020", "author": "OK.", "summary":"", "file": "posts/2020-07-01-welcome-to-jekyll.md" }
 ]
