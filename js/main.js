@@ -133,7 +133,7 @@ $(document).ready(
         let render;
         $.ajax({
         type: "GET",
-        url: url,
+        url: "/" + url,
         async: false,
         success: function(data){
             return render = template.compile(data);
