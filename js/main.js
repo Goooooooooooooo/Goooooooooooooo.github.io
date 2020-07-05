@@ -132,7 +132,7 @@ $(document).ready(
     function ajax_get_template(url){
         let render;
         $.ajax({
-        type: "GET",
+        type: "POST",
         url: "/" + url,
         async: false,
         success: function(data){
