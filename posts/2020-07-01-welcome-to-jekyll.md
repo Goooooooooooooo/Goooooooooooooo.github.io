@@ -2,7 +2,6 @@
 
 Showdown is a Javascript Markdown to HTML converter, based on the original works by John Gruber. It can be used client side (in the browser) or server side (with Node or io). 
 
-
 # Installation
 
 ## Download tarball
@@ -22,13 +21,12 @@ You can download the latest release tarball directly from [releases][releases]
 You can also use one of several CDNs available: 
 
 * rawgit CDN
-
+  
         https://cdn.rawgit.com/showdownjs/showdown/<version tag>/dist/showdown.min.js
 
 * cdnjs
-
+  
         https://cdnjs.cloudflare.com/ajax/libs/showdown/<version tag>/showdown.min.js
-
 
 [sd-logo]: https://raw.githubusercontent.com/showdownjs/logo/master/dist/logo.readme.png
 [releases]: https://github.com/showdownjs/showdown/releases
@@ -39,45 +37,44 @@ You can also use one of several CDNs available:
 
 # Syntax
 
-
 ## Table of contents
 
 - [Introduction](#introduction)
 - [Paragraphs](#paragraphs)
 - [Headings](#headings)
-    * [Atx Style](#atx-style)
-    * [Setext style](#setext-style)
-    * [Header IDs](#header-ids)
+  * [Atx Style](#atx-style)
+  * [Setext style](#setext-style)
+  * [Header IDs](#header-ids)
 - [Blockquotes](#blockquotes)
 - [Bold and Italic](#bold-and-italic)
 - [Strikethrough](#strikethrough)
 - [Emojis](#emojis)
 - [Code formatting](#code-formatting)
-    * [Inline formats](#inline-formats)
-    * [Multiple lines](#multiple-lines)
+  * [Inline formats](#inline-formats)
+  * [Multiple lines](#multiple-lines)
 - [Lists](#lists)
-    * [Unordered lists](#unordered-lists)
-    * [Ordered lists](#ordered-lists)
-    * [TaskLists (GFM Style)](#tasklists--gfm-style-)
-    * [List syntax](#list-syntax)
-    * [Nested blocks](#nested-blocks)
-    * [Nested lists](#nested-lists)
-    * [Nested code blocks](#nested-code-blocks)
+  * [Unordered lists](#unordered-lists)
+  * [Ordered lists](#ordered-lists)
+  * [TaskLists (GFM Style)](#tasklists--gfm-style-)
+  * [List syntax](#list-syntax)
+  * [Nested blocks](#nested-blocks)
+  * [Nested lists](#nested-lists)
+  * [Nested code blocks](#nested-code-blocks)
 - [Links](#links)
-    * [Simple](#simple)
-    * [Inline](#inline)
-    * [Reference Style](#reference-style)
+  * [Simple](#simple)
+  * [Inline](#inline)
+  * [Reference Style](#reference-style)
 - [Images](#images)
-    * [Inline](#inline-1)
-    * [Reference Style](#reference-style-1)
-    * [Image dimensions](#image-dimensions)
-    * [Base64 encoded images](#base64-encoded-images)
+  * [Inline](#inline-1)
+  * [Reference Style](#reference-style-1)
+  * [Image dimensions](#image-dimensions)
+  * [Base64 encoded images](#base64-encoded-images)
 - [Tables](#tables)
 - [Mentions](#mentions)
 - [Handling HTML in markdown documents](#handling-html-in-markdown-documents)
 - [Escaping entities](#escaping-entities)
-    * [Escaping markdown entities](#escaping-markdown-entities)
-    * [Escaping html tags](#escaping-html-tags)
+  * [Escaping markdown entities](#escaping-markdown-entities)
+  * [Escaping html tags](#escaping-html-tags)
 - [Known differences and Gotchas](#known-differences-and-gotchas)
 
 ## Introduction
@@ -95,7 +92,7 @@ Paragraphs in Showdown are just **one or more lines of consecutive text** follow
 ```md
 On July 2, an alien mothership entered Earth's orbit and deployed several dozen 
 saucer-shaped "destroyer" spacecraft, each 15 miles (24 km) wide.
-    
+
 On July 3, the Black Knights, a squadron of Marine Corps F/A-18 Hornets, 
 participated in an assault on a destroyer near the city of Los Angeles.
 ```
@@ -155,7 +152,7 @@ You can also use [**setext style**][setext] headings, although only two levels a
 ```md
 This is an H1
 =============
-    
+
 This is an H2
 -------------
 ```
@@ -181,10 +178,10 @@ Showdown generates bookmarks anchors in titles automatically, by adding an id pr
 
 This behavior can be modified with options:
 
- - **`noHeaderId`** disables automatic id generation; 
- - **`ghCompatibleHeaderId`** generates header ids compatible with github style (spaces are replaced with dashes and a bunch of non alphanumeric chars are removed)
- - **`prefixHeaderId`** adds a prefix to the generated header ids (either automatic or custom).
- - **`headerLevelStart`** sets the header starting level. For instance, setting this to 3 means that `# header` will be converted to `<h3>`.
+- **`noHeaderId`** disables automatic id generation; 
+- **`ghCompatibleHeaderId`** generates header ids compatible with github style (spaces are replaced with dashes and a bunch of non alphanumeric chars are removed)
+- **`prefixHeaderId`** adds a prefix to the generated header ids (either automatic or custom).
+- **`headerLevelStart`** sets the header starting level. For instance, setting this to 3 means that `# header` will be converted to `<h3>`.
 
 Read the [README.md][readme] for more info
 
@@ -194,7 +191,7 @@ You can indicate blockquotes with a >.
 
 ```md
 In the words of Abraham Lincoln:
-    
+
 > Pardon my french
 ```
 
@@ -269,7 +266,7 @@ To create blocks of code you should indent it by four spaces.
 If the options **`ghCodeBlocks`** is activated (which is by default), you can use triple backticks (```) to format text as its own distinct block.
 
     Check out this neat program I wrote:
-
+    
     ```
     x = 0
     x = 2 + 2
@@ -309,10 +306,10 @@ Showdown also supports GFM styled takslists if the **`tasklists`** option is ena
 ```md
  - [x] checked list item
  - [ ] unchecked list item
-``` 
+```
 
- - [x] checked list item
- - [ ] unchecked list item
+- [x] checked list item
+- [ ] unchecked list item
 
 ### List syntax
 
@@ -500,10 +497,9 @@ Inline image syntax looks like this:
 
 That is:
 
- + An exclamation mark: !;
- + followed by a set of square brackets, containing the alt attribute text for the image;
- + followed by a set of parentheses, containing the URL or path to the image, and an optional title attribute enclosed in double or single quotes.
-
++ An exclamation mark: !;
++ followed by a set of square brackets, containing the alt attribute text for the image;
++ followed by a set of parentheses, containing the URL or path to the image, and an optional title attribute enclosed in double or single quotes.
 
 ### Reference Style
 
@@ -550,6 +546,7 @@ Showdown also supports Base64 encoded images, both reference and inline style.
 You can add newlines arbitrarily, as long as they are added after the `,` character.
 
 **inline style**
+
 ```md
 ![Alt text](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7l
 jmRAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAY
@@ -557,6 +554,7 @@ SURBVBhXYwCC/2AAZYEoOAMs8Z+BgQEAXdcR7/Q1gssAAAAASUVORK5CYII=)
 ```
 
 **reference style**
+
 ```md
 ![Alt text][id]
 
@@ -569,6 +567,7 @@ AcdvqGQAAAAYSURBVBhXYwCC/2AAZYEoOAMs8Z+BgQEAXdcR7/Q1gssAAAAASUVORK5CYII=
 Please note that with reference style base64 image sources, regardless of "wrapping", a double newline is needed after the base64 string to separate them from a paragraph or other text block (but references can be adjacent).
 
 **wrapped reference style**
+
 ```md
 ![Alt text][id]
 ![Alt text][id2]
@@ -584,7 +583,6 @@ AcdvqGQAAAAYSURBVBhXYwCC/2AAZYEoOAMs8Z+BgQEAXdcR7/Q1gssAAAAASUVORK5CYII=
 
 this text needs to be separated from the references by 2 newlines
 ```
-
 
 ## Tables
 
@@ -641,9 +639,9 @@ However, there are exceptions to this. With `<code>` and `<pre><code>` tags, the
 some markdown **here** with <code>foo & bar <baz></baz></code>
 ```
 
- ```html
-<p>some markdown <strong>here</strong> with <code>foo &amp; bar &lt;baz&gt;&lt;/baz&gt;</code></p>
-``` 
+```html
+<p>some markdown <strong>here</strong> with <code>foo & bar <baz></baz></code></p>
+```
 
 If you wish to enable markdown parsing inside a specific HTML tag, you can enable it by using the html attribute **`markdown`** or  **`markdown="1"`**  or **`data-markdown="1"`**.
 
@@ -690,44 +688,43 @@ Since [version 1.7.2](https://github.com/showdownjs/showdown/tree/1.7.2) backsla
 
 ```md
 \<div>a literal div\</div>
-``` 
+```
 
 ## Known differences and Gotchas
 
 In most cases, Showdown's output is identical to that of Perl Markdown v1.0.2b7.  What follows is a list of all known deviations.  Please file an issue if you find more.
 
 * **Since version 1.4.0, showdown supports the markdown="1" attribute**, but for older versions, this attribute is ignored. This means:
-
+  
         <div markdown="1">
              Markdown does *not* work in here.
         </div>
 
-
 * You can only nest square brackets in link titles to a depth of two levels:
-
+  
         [[fine]](http://www.github.com/)
         [[[broken]]](http://www.github.com/)
-
+  
     If you need more, you can escape them with backslashes.
 
-
 * A list is **single paragraph** if it has only **1 line-break separating items** and it becomes **multi paragraph if ANY of its items is separated by 2 line-breaks**:
-
-   ```md
+  
+  ```md
     - foo
-   
+  
     - bar
     - baz
-   ```
+  ```
+  
    becomes
-
-    ```html
+  
+  ```html
     <ul>
       <li><p>foo</p></li>
       <li><p>bar</p></li>
       <li><p>baz</p></li>
     </ul>
-    ```
+  ```
 
 This new ruleset is based on the comments of Markdown's author John Gruber in the [Markdown discussion list][md-newsletter].
 
