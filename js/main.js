@@ -118,6 +118,9 @@ $(document).ready(
             $("#main-wrapper > section.active, #menu > li a").removeClass("active");
             $("#detail").addClass("active");
             $(".back-toggler").addClass("back-show");
+            if ($("#detail").find('img').length > 0){
+                $("#detail").find('img').addClass("img-fluid");
+            }
             Prism.highlightAll();
         }
         });
@@ -133,7 +136,7 @@ $(document).ready(
         let render;
         $.ajax({
         type: "GET",
-        url: "/" + url,
+        url: url,
         async: false,
         success: function(data){
             return render = template.compile(data);
