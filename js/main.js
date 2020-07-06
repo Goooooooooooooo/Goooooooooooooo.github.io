@@ -17,7 +17,7 @@
 
     var list;
     var obj;
-    var keyword = ['home','myBlog','about','contact'];
+    var keyword = ['#home','#myBlog','#about','#contact'];
     var reg = new RegExp("detail_[0-9]{1,}");
     var paginator = 4; // 每页显示个数
     var list_render; // list.html template
@@ -118,7 +118,8 @@
     });
     // 获取指定页面数据
     function getPaginator(e,page){
-        $("#myBlog").empty().append(list_render({list: obj[page], paginator: obj, page_number: page}));
+        //$("#myBlog").empty().append(list_render({list: obj[page], paginator: obj, page_number: page}));
+        $("#myBlog").html(list_render({list: obj[page], paginator: obj, page_number: page}));
     }
 
     // 获取指定id 文章详细
