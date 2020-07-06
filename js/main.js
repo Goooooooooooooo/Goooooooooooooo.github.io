@@ -85,6 +85,7 @@
                     $("#main-wrapper > section.active, #menu > li a").removeClass("active");
                     a(".back-toggler").removeClass("back-show");
                     $("#myBlog").addClass("active");
+                    $("#detail").empty();
                 });
                 var i =0;
                 var str = "\n#include<stdio.h>\nint main(void)\n{\n\tprintf(\"Hello World!!\/n\");\n\t\/\/ Programmer live\n\tbool alive = true;\n\twhile(alive)\n\t{\n\t\teat();\n\t\tsleep();\n\t\tcode();\n\t}\n\treturn 0;\n}";
@@ -118,7 +119,6 @@
     // 获取指定页面数据
     function getPaginator(e,page){
         $("#myBlog").empty().append(list_render({list: obj[page], paginator: obj, page_number: page}));
-        Prism.highlightAll();
     }
 
     // 获取指定id 文章详细
