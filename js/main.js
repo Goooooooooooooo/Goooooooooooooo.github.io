@@ -1,58 +1,3 @@
-$(document).ready(
-    function(a) {
-        a("#menu > li a").on("click", function () {
-            a("#main-wrapper > section.active, #menu > li a").removeClass("active");
-            a(".back-toggler").removeClass("back-show");
-            a(this).addClass("active");
-            var d = a(this).attr("href");
-            a("#main-wrapper").children(d).addClass("active");
-        });
-        var c = a(".menu-toggler");
-        var d = a(window);
-        var b = a("header");
-        c.click(function () {
-          a(this).toggleClass("open").find("i").toggleClass("fa-bars fa-times");
-          b.toggleClass("open")
-        });
-        if (d.width() < 992) {
-          a(".menu-list li a").click(function () {
-            b.removeClass("open");
-            c.removeClass("open").find("i").removeClass("fa-times").addClass("fa-bars")
-          })
-        }
-
-        var e = a(".back-toggler");
-        e.click(function (){
-            $("#main-wrapper > section.active, #menu > li a").removeClass("active");
-            a(".back-toggler").removeClass("back-show");
-            $("#myBlog").addClass("active");
-        });
-        var i =0;
-        var str = "\n#include<stdio.h>\nint main(void)\n{\n\tprintf(\"Hello World!!\/n\");\n\t\/\/ Programmer live\n\tbool alive = true;\n\twhile(alive)\n\t{\n\t\teat();\n\t\tsleep();\n\t\tcode();\n\t}\n\treturn 0;\n}";
-        var code = document.getElementById("home-code");
-        //console.log(code);
-        function typing(){
-            var myDiv = document.getElementById("code-display");
-            myDiv.innerHTML += str.charAt(i)
-            i++;
-            code.codeText = myDiv.innerText;
-            highlightCode();
-            var id = setTimeout(typing,69);
-            if(i==str.length)
-            {
-                clearTimeout(id);
-            }
-        }
-        function highlightCode() {
-            var newCode = document.createElement("code");
-            newCode.textContent = code.codeText;
-            newCode.className = "language-csharp";
-            Prism.highlightElement(newCode);
-            code.parentElement.replaceChild(newCode, code);
-            code = newCode;
-        };
-        typing();
-   });
 
     function getCookie(name) {
         var cookieValue = null;
@@ -72,6 +17,8 @@ $(document).ready(
 
     var list;
     var obj;
+    var keyword = ['home','myBlog','about','contact'];
+    var reg = new RegExp("detail_[0-9]{1,}");
     var paginator = 4; // 每页显示个数
     var list_render; // list.html template
     var detail_render; // detail.html template
@@ -96,9 +43,78 @@ $(document).ready(
         $("#about").empty().append(about_render());
         $("#contact").empty().append(contact_render());
 
+        $(document).ready(
+            function(a) {
+        
+                a("#menu > li a").on("click", function () {
+                    a("#main-wrapper > section.active, #menu > li a").removeClass("active");
+                    a(".back-toggler").removeClass("back-show");
+                    a(this).addClass("active");
+                    var d = a(this).attr("href");
+                    a("#main-wrapper").children(d).addClass("active");
+                });
+                var c = a(".menu-toggler");
+                var d = a(window);
+                var b = a("header");
+                c.click(function () {
+                    a(this).toggleClass("open").find("i").toggleClass("fa-bars fa-times");
+                    b.toggleClass("open")
+                });
+                if (d.width() < 992) {
+                    a(".menu-list li a").click(function () {
+                    b.removeClass("open");
+                    c.removeClass("open").find("i").removeClass("fa-times").addClass("fa-bars")
+                    })
+                }
+        
+                var location_url = window.location.href;
+                //console.log(location_url);
+                if(location_url.includes("#")){
+                    let str = location_url.substring(location_url.indexOf("#"));
+                    //console.log(str);
+                    if(reg.test(str)){
+                        gotoDetailPage(e, location_url.substring(location_url.indexOf("_")+1));
+                    }else if(keyword.includes(str)){
+                        a("#main-wrapper > section.active, #menu > li a").removeClass("active");
+                        $(str).addClass("active");
+                    }
+                }
+                
+                var e = a(".back-toggler");
+                e.click(function (){
+                    $("#main-wrapper > section.active, #menu > li a").removeClass("active");
+                    a(".back-toggler").removeClass("back-show");
+                    $("#myBlog").addClass("active");
+                });
+                var i =0;
+                var str = "\n#include<stdio.h>\nint main(void)\n{\n\tprintf(\"Hello World!!\/n\");\n\t\/\/ Programmer live\n\tbool alive = true;\n\twhile(alive)\n\t{\n\t\teat();\n\t\tsleep();\n\t\tcode();\n\t}\n\treturn 0;\n}";
+                var code = document.getElementById("home-code");
+                //console.log(code);
+                function typing(){
+                    var myDiv = document.getElementById("code-display");
+                    myDiv.innerHTML += str.charAt(i)
+                    i++;
+                    code.codeText = myDiv.innerText;
+                    highlightCode();
+                    var id = setTimeout(typing,69);
+                    if(i==str.length)
+                    {
+                        clearTimeout(id);
+                    }
+                }
+                function highlightCode() {
+                    var newCode = document.createElement("code");
+                    newCode.textContent = code.codeText;
+                    newCode.className = "language-csharp";
+                    Prism.highlightElement(newCode);
+                    code.parentElement.replaceChild(newCode, code);
+                    code = newCode;
+                };
+                typing();
+            });
+
         Prism.highlightAll();
     });
-
     // 获取指定页面数据
     function getPaginator(e,page){
         $("#myBlog").empty().append(list_render({list: obj[page], paginator: obj, page_number: page}));
@@ -108,6 +124,7 @@ $(document).ready(
     // 获取指定id 文章详细
     function gotoDetailPage(e, id){
         var item = list.find(ele => {return ele.id == id;});
+        if(item == null || typeof item == 'undefined' || !item) return false;
         $.ajax({
         type: "GET",
         url: item.file,
@@ -144,4 +161,6 @@ $(document).ready(
         });
         return render;
     }
+
+
 

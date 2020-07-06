@@ -2,7 +2,7 @@
 
 使用第三方工具formspree可以表单提交和ajax提交，将表单连接到formspree，formspree会通过电子邮件向提交你的内容
 
- https://formspree.io/
+[ https://formspree.io/](formspree)
 
 1. 在官网注册邮箱并验证
 
