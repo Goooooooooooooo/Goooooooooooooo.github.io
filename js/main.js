@@ -14,18 +14,14 @@ var reg = new RegExp("detail_[0-9]{1,}");
 ajax_getJSON = $.getJSON("data/json_data.json","", function(data){
     list = data;
     //console.log(list);
-});
-
-// json_data.json 获取之后执行
-var pro = ajax_getJSON.then(function () {
     //console.log(chunk(list, paginator));
     obj = chunk(list, paginator);
+    $.when(ajax_get_template("template/detail.html")).done(function(data){
+        detail_render = data;
+    });
     $.when(ajax_get_template("template/list.html")).done(function(data){
         list_render = data;
         $("#myBlog").html(list_render({list: obj[0], paginator: obj, page_number: 0}));
-    });
-    $.when(ajax_get_template("template/detail.html")).done(function(data){
-        detail_render = data;
     });
     $.when(ajax_get_template("template/about.html")).done(function(data){
         about_render = data;
@@ -38,7 +34,7 @@ var pro = ajax_getJSON.then(function () {
     Prism.highlightAll();
 });
 
-pro.done(function (){
+$.when(ajax_getJSON).done(function (){
     $(document).ready(function(){
         (function(e){
             var location_url = window.location.href;
