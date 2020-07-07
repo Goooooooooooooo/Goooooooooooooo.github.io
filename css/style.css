@@ -300,9 +300,9 @@ h1, h2, h3, h4, h5, h6 {
 .blog-content p {
     color: #fff;
     margin-bottom: 15px;
-    white-space: nowrap;
+    /* white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; */
 }
 p {
     line-height: 1.6;
