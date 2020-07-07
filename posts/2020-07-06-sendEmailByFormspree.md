@@ -6,7 +6,7 @@
 
 1. 在官网注册邮箱并验证
 
-![avatar](https://goooooooooooooo.github.io/img/registerforformspree.jpg)
+<img src="https://goooooooooooooo.github.io/img/registerforformspree.jpg" title="" alt="avatar" data-align="center">
 
 ![avatar](https://goooooooooooooo.github.io/img/verifyemail.jpg)
 

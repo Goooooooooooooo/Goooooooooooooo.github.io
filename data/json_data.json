@@ -1,7 +1,7 @@
 [
-  { "id": 1, "title": "ajax获取本地文件", "date": "7/5/2020", "author": "OK.", "summary":"ajax获取本地json文件的两种方式", "file": "posts/2020-07-01-ajax获取本地文件.md" },
-  { "id": 2, "title": "静态网站发送邮件(Formspree)", "date": "7/6/2020", "author": "OK.", "summary":"Formspree表单发送邮件，无需后台，适合静态网站", "file": "posts/2020-07-06-sendEmailByFormspree.md" },
-  { "id": 3, "title": "Demo3", "date": "12/1/2020", "author": "OK.", "summary":"ajax获取本地json文件的两种方式", "file": "posts/2020-07-01-ajax获取本地文件.md" },
+  { "id": 1, "title": "静态网站发送邮件(Formspree)", "date": "7/6/2020", "author": "OK.", "summary":"Formspree表单发送邮件，无需后台，适合静态网站", "file": "posts/2020-07-06-sendEmailByFormspree.md" },
+  { "id": 2, "title": "ajax获取本地文件", "date": "7/1/2020", "author": "OK.", "summary":"ajax获取本地json文件的两种方式", "file": "posts/2020-07-01-ajax获取本地文件.md" },
+  { "id": 3, "title": "jQuery Validation Engine 表单验证(angular)", "date": "7/7/2020", "author": "OK.", "summary":"angular中使用jQuery Validation Engine 表单验证", "file": "posts/2020-07-07-jqueryValidationEngine.md" },
   { "id": 4, "title": "Demo4", "date": "12/1/2020", "author": "OK.", "summary":"", "file": "posts/2020-07-01-welcome-to-jekyll.md" },
   { "id": 5, "title": "Demo5", "date": "12/1/2020", "author": "OK.", "summary":"", "file": "posts/2020-07-01-welcome-to-jekyll.md" },
   { "id": 6, "title": "Demo6", "date": "12/1/2020", "author": "OK.", "summary":"ajax获取本地json文件的两种方式", "file": "posts/2020-07-01-ajax获取本地文件.md" },

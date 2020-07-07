@@ -11,17 +11,20 @@
                     </div>
                   </div>
                   <div class="row">
-                    {{ each list value index }}
+                    {{ each list article index }}
                       <div class="col-lg-6 col-12">
                         <div class="blog-box">
                           <div class="blog-icon-box rounded-circle">
-                            <p>{{value.id}}</p><i class="mdi mdi-camera-outline rounded-circle"></i>
+                            <p>{{article.id}}</p><i class="mdi mdi-camera-outline rounded-circle"></i>
                           </div>
                           <div class="blog-content">
-                            <h3>{{value.title}}</h3>
-                            <p>{{value.summary}}</p>
+                            <h3 title="{{article.title}}">{{article.title}}</h3>
+                            <small class="text-yellow"><i class="fa fa-calendar" aria-hidden="true"></i>
+                              {{article.date | dateFormat 'yyyy/MM/dd'}} <i class="fa fa-user" aria-hidden="true"></i>{{article.author}}</small>
+                            <hr>
+                            <p>{{article.summary}}</p>
                           </div>
-                            <a href="#detail_{{value.id}}" class="blog-btn" onclick="gotoDetailPage(this,{{value.id}})" >Read More</a>
+                            <a href="#detail_{{article.id}}" class="blog-btn" onclick="gotoDetailPage(this,{{article.id}})" >Read More</a>
                         </div>
                       </div>
                     {{ /each }}
