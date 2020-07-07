@@ -10,13 +10,14 @@ var contact_render; // contact.html template
 var about_render; // about.html template
 var keyword = ['#home','#myBlog','#about','#contact'];
 var reg = new RegExp("detail_[0-9]{1,}");
+var detail_ajax;
 
 ajax_getJSON = $.getJSON("data/json_data.json","", function(data){
     list = data;
     //console.log(list);
     //console.log(chunk(list, paginator));
     obj = chunk(list, paginator);
-    $.when(ajax_get_template("template/detail.html")).done(function(data){
+    detail_ajax = $.when(ajax_get_template("template/detail.html")).done(function(data){
         detail_render = data;
     });
     $.when(ajax_get_template("template/list.html")).done(function(data){
@@ -122,21 +123,23 @@ function getPaginator(e,page){
 function gotoDetailPage(e, id){
     var item = list.find(ele => {return ele.id == id;});
     if(item == null || typeof item == 'undefined' || !item) return false;
-    $.ajax({
-    type: "GET",
-    url: item.file,
-    success: function(data){
-        item.body = marked(data);
-        //console.log(item);
-        $("#detail").html(detail_render(item));
-        $("#main-wrapper > section.active, #menu > li a").removeClass("active");
-        $("#detail").addClass("active");
-        $(".back-toggler").addClass("back-show");
-        if ($("#detail").find('img').length > 0){
-            $("#detail").find('img').addClass("img-fluid");
-        }
-        Prism.highlightAll();
-    }
+    $.when(detail_ajax).done(function(data){
+        $.ajax({
+            type: "GET",
+            url: item.file,
+            success: function(data){
+                item.body = marked(data);
+                //console.log(item);
+                $("#detail").html(detail_render(item));
+                $("#main-wrapper > section.active, #menu > li a").removeClass("active");
+                $("#detail").addClass("active");
+                $(".back-toggler").addClass("back-show");
+                if ($("#detail").find('img').length > 0){
+                    $("#detail").find('img').addClass("img-fluid");
+                }
+                Prism.highlightAll();
+            }
+        });
     });
 }
 
