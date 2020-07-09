@@ -15,9 +15,9 @@
     "summary":"基于pygame库开发的简易贪吃蛇游戏", 
     "file": "posts/2019-09-09-pygame_snake.md" 
   },
-  { "id": 5, "title": "Demo5", "date": "12/1/2020", "author": "OK.", 
-    "summary":"", 
-    "file": "posts/2020-07-01-welcome-to-jekyll.md" 
+  { "id": 5, "title": "html 页面内锚点定位", "date": "9/8/2019", "author": "OK.", 
+    "summary":"html 页面内锚点定位及跳转方法(4 种)", 
+    "file": "posts/2019-09-08-html_anchor.md" 
   },
   { "id": 6, "title": "Demo6", "date": "12/1/2020", "author": "OK.", 
     "summary":"ajax获取本地json文件的两种方式", 
