@@ -106,7 +106,6 @@ $.when(ajax_getJSON).done(function (){
                 $("#myBlog").addClass("active");
                 $("#detail").empty();
             });
-    
         })(jQuery);
     });
 });

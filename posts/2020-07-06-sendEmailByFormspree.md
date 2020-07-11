@@ -6,9 +6,9 @@ https://formspree.io/
 
 1. 在官网注册邮箱并验证
 
-![avatar](https://goooooooooooooo.github.io/img/registerforformspree.jpg)
+![avatar](https://goooooooooooooo.github.io/img/posts/registerforformspree.jpg)
 
-![avatar](https://goooooooooooooo.github.io/img/verifyemail.jpg)
+![avatar](https://goooooooooooooo.github.io/img/posts/verifyemail.jpg)
 
 2. 配置表单
 
@@ -36,10 +36,10 @@ https://formspree.io/
 
 官网示例
 
-![avatar](https://goooooooooooooo.github.io/img/formspreesample.jpg)
+![avatar](https://goooooooooooooo.github.io/img/posts/formspreesample.jpg)
 
 发送邮件成功后：
 
-![avatar](https://goooooooooooooo.github.io/img/result.jpg)
+![avatar](https://goooooooooooooo.github.io/img/posts/result.jpg)
 
-![avatar](https://goooooooooooooo.github.io/img/result2.jpg)
+![avatar](https://goooooooooooooo.github.io/img/posts/result2.jpg)

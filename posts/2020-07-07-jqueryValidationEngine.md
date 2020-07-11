@@ -59,7 +59,7 @@ var ret = (<any>$("#form_id")).validationEngine('validate');
 </form>
 ```
 
-<img src="https://goooooooooooooo.github.io/img/jqueryValidationEngine.jpg" title="" alt="avatar" data-align="center">
+<img src="https://goooooooooooooo.github.io/img/posts/jqueryValidationEngine.jpg" title="" alt="avatar" data-align="center">
 
 给验证成功，失败的控件添加样式
 

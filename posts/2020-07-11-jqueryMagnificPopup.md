@@ -50,4 +50,4 @@ $(document).ready(function() {
 
 效果图：
 
-<img src="file:///C:/Users/yzok0/AppData/Roaming/marktext/images/ae4272bbad07983e49e85c192bc725a53c0e09e7.jpg" title="" alt="fff" data-align="center">
+<img src="https://goooooooooooooo.github.io/img/posts/magnificPopupDemo.jpg" title="" data-align="center">
