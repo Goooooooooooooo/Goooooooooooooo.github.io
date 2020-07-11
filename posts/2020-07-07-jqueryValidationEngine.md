@@ -61,6 +61,19 @@ var ret = (<any>$("#form_id")).validationEngine('validate');
 
 <img src="https://goooooooooooooo.github.io/img/jqueryValidationEngine.jpg" title="" alt="avatar" data-align="center">
 
+给验证成功，失败的控件添加样式
+
+```typescript
+((document)).ready(function(){
+  (("#form_id")).validationEngine('attach',{
+    addSuccessCssClassToField: "success", // css class name
+    addFailureCssClassToField: "failure"  // css class name
+  });
+});
+```
+
+
+
 HTML5 中可用属性
 
 | 属性名称                       | 说明                                                                                                                                                                                       |
@@ -83,30 +96,27 @@ ion-item{
 
 下面列出一部分规则(可以自定义规则)，具体的可以查看文档
 
-| 名称                     | 示例                                 | 说明                                                                             |
-| ---------------------- | ---------------------------------- | ------------------------------------------------------------------------------ |
-| required               | validate[required]                 | 表示必填项                                                                          |
-| groupRequired[string]  | validate[groupRequired[grp]]       | 在验证组为 grp 的群组，中至少输入或选择一项                                                       |
-| condRequired[string]   | validate[condRequired[ids]]        | 当 ids 的某个控件不为空时，那么该控件也为必填项。可以依赖多项，如：validate[condRequired[id1,id2]]            |
-| minSize[int]           | validate[minSize[6]]               | 最少输入字符数                                                                        |
-| maxSize[int]           | validate[maxSize[20]]              | 最多输入字符数                                                                        |
-| min[int]               | validate[min[1]]                   | 最小值（该项为数字的最小值，注意与 minSize 的区分）                                                 |
-| max[int]               | validate[max[9999]]                | 最大值（该项为数字的最大值，注意与 maxSize 的区分）                                                 |
-| minCheckbox[int]       | validate[minCheckbox[2]]           | 最少选取的项目数（用于 Checkbox）                                                          |
-| maxCheckbox[int]       | validate[maxCheckbox[2]]           | 最多选取的项目数（用于 Checkbox）                                                          |
-| date[string]           | validate[custom[date]]             | 验证日期，格式为 YYYY/MM/DD、YYYY/M/D、YYYY-MM-DD、YYYY-M-D                               |
-| dateFormat[string]     | validate[custom[dateFormat]]       | 验证日期格式，格式为 YYYY/MM/DD、YYYY/M/D、YYYY-MM-DD、YYYY-M-D                             |
-| dateTimeFormat[string] | validate[custom[dateTimeFormat]]   | 验证日期及时间格式，格式为：YYYY/MM/DD hh:mm:ss AM\|PM                                       |
-| dateTimeRange[string]  | validate[dateTimeRange[grp1]]      | 验证日期及时间范围，增加了时间的对比，其他的和 dateRange 一样。                                          |
-| past[string]           | validate[past[2020/07/07]]         | 日期必需是 date 或 date 的过去。date 格式可写作 YYYY/MM/DD、YYYY/M/D、YYYY-MM-DD、YYYY-M-D 或 now |
-| future[string]         | validate[future[now]]              | 日期必须是 data 或 date 的未来。date 格式可写作 YYYY/MM/DD、YYYY/M/D、YYYY-MM-DD、YYYY-M-D 或 now |
-| equals[string]         | validate[equals[id]]               | 当前控件的值需与控件 id 的值相同                                                             |
-| number                 | validate[custom[number]]           | 验证数字                                                                           |
-| integer                | validate[custom[integer]]          | 验证整数                                                                           |
-| phone                  | validate[custom[phone]]            | 验证电话号码                                                                         |
-| email                  | validate[custom[email]]            | 验证 E-mail 地址                                                                   |
-| url                    | validate[custom[url]]              | 验证 url 地址，需以 http://、https:// 或 ftp:// 开头                                      |
-| ipv4                   | validate[custom[ipv4]]             | 验证 ipv4 地址                                                                     |
-| onlyNumberSp           | validate[custom[onlyNumberSp]]     | 只接受填数字和空格                                                                      |
-| onlyLetterSp           | validate[custom[onlyLetterSp]]     | 只接受填英文字母、单引号（'）和空格                                                             |
-| onlyLetterNumber       | validate[custom[onlyLetterNumber]] | 只接受数字和英文字母                                                                     |
+| 名称                     | 示例                               | 说明                                                 |
+| ---------------------- | -------------------------------- | -------------------------------------------------- |
+| required               | validate[required]               | 表示必填项                                              |
+| groupRequired[string]  | validate[groupRequired[grp]]     | 在验证组为 grp 的群组，中至少输入或选择一项                           |
+| condRequired[string]   | validate[condRequired[ids]]      | 当ids的某个控件不为空时，那么该控件也为必填项。可以多项依赖，如：[id1,id2]        |
+| minSize[int]           | validate[minSize[6]]             | 最少输入字符数                                            |
+| maxSize[int]           | validate[maxSize[255]]           | 最多输入字符数                                            |
+| min[int]               | validate[min[1]]                 | 最小值(该项为数字的最小值，注意与 minSize 的区分)                     |
+| max[int]               | validate[max[9999]]              | 最大值(该项为数字的最大值，注意与 maxSize 的区分)                     |
+| minCheckbox[int]       | validate[minCheckbox[2]]         | 最少选取的项目数(用于 Checkbox)                              |
+| maxCheckbox[int]       | validate[maxCheckbox[2]]         | 最多选取的项目数(用于 Checkbox)                              |
+| date[string]           | validate[custom[date]]           | 验证日期，格式为 YYYY/MM/DD、YYYY/M/D、YYYY-MM-DD、YYYY-M-D   |
+| dateFormat[string]     | validate[custom[dateFormat]]     | 验证日期格式，格式为 YYYY/MM/DD、YYYY/M/D、YYYY-MM-DD、YYYY-M-D |
+| dateTimeFormat[string] | validate[custom[dateTimeFormat]] | 验证日期及时间格式，格式为：YYYY/MM/DD hh:mm:ss AM\|PM           |
+| dateTimeRange[string]  | validate[dateTimeRange[grp1]]    | 验证日期及时间范围，增加了时间的对比，其他的和 dateRange 一样。              |
+| equals[string]         | validate[equals[id]]             | 当前控件的值需与控件 id 的值相同                                 |
+| number                 | validate[custom[number]]         | 验证数字                                               |
+| integer                | validate[custom[integer]]        | 验证整数                                               |
+| phone                  | validate[custom[phone]]          | 验证电话号码                                             |
+| email                  | validate[custom[email]]          | 验证E-mail地址                                         |
+| url                    | validate[custom[url]]            | 验证 url 地址，需以 http://、https:// 或 ftp:// 开头          |
+| ipv4                   | validate[custom[ipv4]]           | 验证 ipv4 地址                                         |
+| onlyNumberSp           | validate[custom[onlyNumberSp]]   | 只接受填数字和空格                                          |
+| onlyLetterSp           | validate[custom[onlyLetterSp]]   | 只接受填英文字母、单引号（'）和空格                                 |
