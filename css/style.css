@@ -30,6 +30,10 @@ body {
   font-weight: 500;
 }
 
+#article_body a:hover{ 
+  text-decoration: underline !important;
+ } 
+
 #article_body table{
   border: 1px solid #fff;
 }
