@@ -10,7 +10,7 @@ body {
 }
 
 /* background color */
-#myBlog,#about,#contact,#blogDetail{
+#myBlog,#about,#contact,#blogDetail,#portfolio{
 	background: #212529;
 }
 .bg-dark{
@@ -18,11 +18,25 @@ body {
 }
 
 #article_body{
-  font-family: -apple-system,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  font-family: Consolas, "Microsoft Yahei", Arial, sans-serif;
   box-sizing: border-box;
   min-width: 200px;
   max-width: 980px;
   margin: 0 auto;
+}
+
+#article_body a {
+  color: #ED7019;
+  font-weight: 500;
+}
+
+#article_body table{
+  border: 1px solid #fff;
+}
+
+#article_body th, #article_body td{
+  border: 1px solid #fff;
+  padding: 10px;
 }
 
 .text-yellow{
@@ -283,10 +297,11 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 170px;
     transition: .5s ease-in-out;
 }
+
 .blog-content {
     padding-left: 206px;
 }
-.blog-content h3 {
+.blog-content h4 {
     color: #fff;
     font-weight: 500;
     margin-bottom: 15px;
@@ -308,6 +323,7 @@ p {
     line-height: 1.6;
     font-size: 15px;
 }
+
 .blog-btn {
     display: inline-block;
     position: absolute;
@@ -371,6 +387,7 @@ a, a:active, a:focus, a:active {
     outline: none;
     box-shadow: none;
 }
+
 
 /* about style */
 .about-text-block {
