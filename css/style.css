@@ -201,7 +201,7 @@ header .navbar-brand b {
 }
 /* home style */
 .home-bg {
-    background: url(../img/home-bg1.jpg) center no-repeat fixed;
+    background: url(../img/home/home-bg1.jpg) center no-repeat fixed;
     background-size: cover;
     overflow: hidden;
 }
@@ -423,12 +423,12 @@ a, a:active, a:focus, a:active {
     transition: all .3s ease-in-out;
     background-color: #f1f3f6;
     border-radius: 1.25rem;
-    box-shadow: 3px 3px 3px #dadada, -3px -3px 3px #fafafa;
+    /* box-shadow: 3px 3px 3px #dadada, -3px -3px 3px #fafafa; */
     cursor: pointer;
 }
-.expert-box img {
+/* .expert-box img {
     margin-bottom: 20px;
-}
+} */
 .contact-info .icon i {
     font-size: 40px;
     color: #FF9E2B;
