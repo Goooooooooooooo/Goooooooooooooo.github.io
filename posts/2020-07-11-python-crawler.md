@@ -23,8 +23,6 @@ import time
 import codecs
 ```
 
-
-
 2. 设置请求头
 
 ```python
@@ -38,8 +36,6 @@ req.packages.urllib3.disable_warnings()
 a = req.Session()
 a.keep_alive = False
 ```
-
-
 
 3. 获取小说所有章节的URL
 
@@ -65,16 +61,14 @@ def get_contents(url):
     return url_list
 ```
 
-
-
 4. 获取章节标题和本文
 
 ```python
 def get_content(url):
-    
+
     r = a.get(url, headers = headers, verify = False)
     time.sleep(0.5)
-    
+
     soup = BeautifulSoup(r.content, 'html.parser')
 
     data = {}
@@ -94,8 +88,6 @@ def get_content(url):
         data['content'] = data['content'] + '\r\n' + x.text.replace('readx();','')
     return data
 ```
-
-
 
 5. 调用方法，获取小说
 
@@ -117,5 +109,3 @@ if __name__ == '__main__':
         f.write('\r\n' + data['content'] + '\r\n')
     f.close()
 ```
-
-

@@ -36,11 +36,13 @@ body {
 
 #article_body table{
   border: 1px solid #fff;
+  table-layout: fixed;
 }
 
 #article_body th, #article_body td{
   border: 1px solid #fff;
   padding: 10px;
+  word-wrap: break-word;
 }
 
 .text-yellow{
@@ -300,6 +302,18 @@ h1, h2, h3, h4, h5, h6 {
     color: #FF9900;
     line-height: 170px;
     transition: .5s ease-in-out;
+}
+
+.post-date {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  line-height: 80px;
+  bottom: -14px;
+  font-size: 36px;
+  color: #FF9E2B;
+  right: -10px;
 }
 
 .blog-content {
