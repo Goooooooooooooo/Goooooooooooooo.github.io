@@ -136,7 +136,7 @@ array.some(item => item > 3);
 
 
 
-7. reduce()
+7. **reduce()**
 
 > `reduce()` 方法对数组中的每个元素执行一个由您提供的**reducer**函数(升序执行)，将其结果汇总为单个返回值。
 > 
@@ -173,3 +173,5 @@ function chunk(arr, size) {
     return arr.reduce((newarr, _, i) => (i % size ? newarr : [...newarr, arr.slice(i, i + size)]), []);
 }
 ```
+
+
