@@ -1,9 +1,9 @@
 [
-  { "id": 1, "title": "JavaScript中数组处理方法简单介绍", "date": "7/6/2020", "author": "OK.", 
+  { "id": 1, "title": "JavaScript中数组处理方法简单介绍", "date": "9/6/2019", "author": "OK.", 
     "summary":"JavaScript中 [forEach(), map(), filter(), find(), every(), some(), reduce()] 的使用方法", 
-    "file": "posts/2020-07-06-JavaScriptArrayPrototype.md" 
+    "file": "posts/2020-07-06-JavaScriptArrayPrototype.md"
   },
-  { "id": 2, "title": "灯箱效果插件(Magnific Popup)", "date": "7/11/2020", "author": "OK.", 
+  { "id": 2, "title": "灯箱效果插件(Magnific Popup)", "date": "9/11/2019", "author": "OK.", 
     "summary":"Magnific Popup 一个优秀的弹出对话框或者灯箱效果插件。特点就是：好用", 
     "file": "posts/2020-07-11-jqueryMagnificPopup.md" 
   },
@@ -27,7 +27,7 @@
     "summary":"html 页面内锚点定位及跳转方法(4 种)", 
     "file": "posts/2019-09-08-html_anchor.md" 
   },
-  { "id": 8, "title": "Python爬虫爬取小说", "date": "11/7/2020", "author": "OK.", 
+  { "id": 8, "title": "Python爬虫爬取小说", "date": "11/7/2019", "author": "OK.", 
     "summary":"使用 BeautifulSoup,一个灵活又方便的网页解析库，来获取你想要的数据", 
     "file": "posts/2020-07-11-python-crawler.md" 
   }
