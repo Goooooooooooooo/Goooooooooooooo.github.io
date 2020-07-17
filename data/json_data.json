@@ -30,5 +30,21 @@
   { "id": 8, "title": "Python爬虫爬取小说", "date": "11/7/2019", "author": "OK.", 
     "summary":"使用 BeautifulSoup,一个灵活又方便的网页解析库，来获取你想要的数据", 
     "file": "posts/2020-07-11-python-crawler.md" 
+  },
+  { "id": 9, "title": "jQuery Validation Engine 表单验证(angular)", "date": "7/7/2020", "author": "OK.", 
+    "summary":"angular中使用jQuery Validation Engine 表单验证", 
+    "file": "posts/2020-07-07-jqueryValidationEngine.md" 
+  },
+  { "id": 10, "title": "pygame snake", "date": "9/9/2019", "author": "OK.", 
+    "summary":"基于pygame库开发的简易贪吃蛇游戏", 
+    "file": "posts/2019-09-09-pygame_snake.md" 
+  },
+  { "id": 11, "title": "html 页面内锚点定位", "date": "9/8/2019", "author": "OK.", 
+    "summary":"html 页面内锚点定位及跳转方法(4 种)", 
+    "file": "posts/2019-09-08-html_anchor.md" 
+  },
+  { "id": 12, "title": "Python爬虫爬取小说", "date": "11/7/2019", "author": "OK.", 
+    "summary":"使用 BeautifulSoup,一个灵活又方便的网页解析库，来获取你想要的数据", 
+    "file": "posts/2020-07-11-python-crawler.md" 
   }
 ]
