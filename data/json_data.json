@@ -42,5 +42,5 @@
   { "id": 11, "title": "javascript 随机生成密码", "date": "9/9/2019", "author": "OK.", 
     "summary":"javascript 随机生成指定长度的密码", 
     "file": "posts/2019-09-09-js_pw_generate.md" 
-  },
+  }
 ]
