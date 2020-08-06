@@ -54,7 +54,8 @@ var ret = (<any>$("#form_id")).validationEngine('validate');
      -->
     <ion-input type="email" class="validate[required,custom[email],maxSize[255]]"
     [ngModelOptions]="{standalone:true}" [(ngModel)]="email" 
-    data-prompt-position="bottomLeft">
+    data-prompt-position="bottomLeft" 
+    (ngModelChange)="validationEngineRealTimeCheck()">
     </ion-input>
 </form>
 ```
@@ -66,10 +67,40 @@ var ret = (<any>$("#form_id")).validationEngine('validate');
 ```typescript
 ((document)).ready(function(){
   (("#form_id")).validationEngine('attach',{
-    addSuccessCssClassToField: "success", // css class name
-    addFailureCssClassToField: "failure"  // css class name
+    addSuccessCssClassToField: "is-valid", // css class name
+    addFailureCssClassToField: "is-invalid"  // css class name
   });
 });
+
+// 实时检测，显示信息 样式
+static validationEngineRealTimeCheck(){
+  setTime(() => {
+    (<any>$("#form_id")).validationEngine('validate');
+  },10);
+}
+
+```
+
+css：
+
+```scss
+/* ionic 修改提示信息样式 */
+.formError .formErrorContent, .formError .formErrorArrow div{
+  background: #f34444 !important;
+  border: none !important;
+}
+.is-invalid{
+  border: 1px solid var(--ion-color-danger-tint) !important;
+  input:focus{
+    border: solid 2px rgba(243, 90, 90, 0.4) !important;  
+  }
+}
+.is-valid{
+  border: 1px solid var(--ion-color-success-tint) !important;
+  input:focus{
+    border: solid 2px rgba(16, 220, 96, 0.4) !important;  
+  }
+}
 ```
 
 
