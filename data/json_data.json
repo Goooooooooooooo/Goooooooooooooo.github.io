@@ -1,45 +1,49 @@
 [
-  { "id": 1, "title": "JavaScript中数组处理方法简单介绍", "date": "9/6/2019", "author": "OK.", 
+  { "id": 1, "title": "jQuery 和 JavaScript 操作DOM元素方法", "date": "9/11/2019", "author": "OK.", 
+    "summary":"jQuery 和 JavaScript 操作DOM元素方法，获取元素，添加删除样式...", 
+    "file": "posts/2019-09-11-js-dom.md"
+  },
+  { "id": 2, "title": "JavaScript中数组处理方法简单介绍", "date": "9/6/2019", "author": "OK.", 
     "summary":"JavaScript中 [forEach(), map(), filter(), find(), every(), some(), reduce()] 的使用方法", 
     "file": "posts/2020-07-06-JavaScriptArrayPrototype.md"
   },
-  { "id": 2, "title": "灯箱效果插件(Magnific Popup)", "date": "9/11/2019", "author": "OK.", 
+  { "id": 3, "title": "灯箱效果插件(Magnific Popup)", "date": "9/11/2019", "author": "OK.", 
     "summary":"Magnific Popup 一个优秀的弹出对话框或者灯箱效果插件。特点就是：好用", 
     "file": "posts/2020-07-11-jqueryMagnificPopup.md" 
   },
-  { "id": 3, "title": "静态网站发送邮件(Formspree)", "date": "7/6/2020", "author": "OK.", 
+  { "id": 4, "title": "静态网站发送邮件(Formspree)", "date": "7/6/2020", "author": "OK.", 
     "summary":"Formspree表单发送邮件，无需后台，适合静态网站", 
     "file": "posts/2020-07-06-sendEmailByFormspree.md" 
   },
-  { "id": 4, "title": "JavaScript 数组去除空值，假值(filter)", "date": "7/6/2020", "author": "OK.", 
+  { "id": 5, "title": "JavaScript 数组去除空值，假值(filter)", "date": "7/6/2020", "author": "OK.", 
     "summary":"用 filter 去除数组中的 null, undefined等值", 
     "file": "posts/2020-07-06-js-filter.md" 
   },
-  { "id": 5, "title": "angular 模板语法使用的一些方法", "date": "7/6/2020", "author": "OK.", 
+  { "id": 6, "title": "angular 模板语法使用的一些方法", "date": "7/6/2020", "author": "OK.", 
     "summary":"angular 模板语法关于(ngModel,ngStyle,ngClass)的一些使用方法", 
     "file": "posts/2020-07-06-angular-template.md" 
   },
-  { "id": 6, "title": "jQuery Validation Engine 表单验证(angular)", "date": "7/7/2020", "author": "OK.", 
+  { "id": 7, "title": "jQuery Validation Engine 表单验证(angular)", "date": "7/7/2020", "author": "OK.", 
     "summary":"angular中使用jQuery Validation Engine 表单验证", 
     "file": "posts/2020-07-07-jqueryValidationEngine.md" 
   },
-  { "id": 7, "title": "ajax获取本地文件", "date": "7/1/2020", "author": "OK.", 
+  { "id": 8, "title": "ajax获取本地文件", "date": "7/1/2020", "author": "OK.", 
     "summary":"ajax获取本地json文件的两种方式", 
     "file": "posts/2020-07-01-ajax获取本地文件.md" 
   },
-  { "id": 8, "title": "pygame snake", "date": "9/9/2019", "author": "OK.", 
+  { "id": 9, "title": "pygame snake", "date": "9/9/2019", "author": "OK.", 
     "summary":"基于pygame库开发的简易贪吃蛇游戏", 
     "file": "posts/2019-09-09-pygame_snake.md" 
   },
-  { "id": 9, "title": "html 页面内锚点定位", "date": "9/8/2019", "author": "OK.", 
+  { "id": 10, "title": "html 页面内锚点定位", "date": "9/8/2019", "author": "OK.", 
     "summary":"html 页面内锚点定位及跳转方法(4 种)", 
     "file": "posts/2019-09-08-html_anchor.md" 
   },
-  { "id": 10, "title": "Python爬虫爬取小说", "date": "11/7/2019", "author": "OK.", 
+  { "id": 11, "title": "Python爬虫爬取小说", "date": "11/7/2019", "author": "OK.", 
     "summary":"使用 BeautifulSoup,一个灵活又方便的网页解析库，来获取你想要的数据", 
     "file": "posts/2020-07-11-python-crawler.md" 
   },
-  { "id": 11, "title": "javascript 随机生成密码", "date": "9/9/2019", "author": "OK.", 
+  { "id": 12, "title": "javascript 随机生成密码", "date": "9/9/2019", "author": "OK.", 
     "summary":"javascript 随机生成指定长度的密码", 
     "file": "posts/2019-09-09-js_pw_generate.md" 
   }

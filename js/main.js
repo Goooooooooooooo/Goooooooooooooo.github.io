@@ -14,7 +14,10 @@ var detail_ajax;
 
 ajax_getJSON = $.getJSON("data/json_data.json","", function(data){
     list = data;
-    //console.log(list);
+    // list.sort(function(a, b) {
+    //     return (a.id - b.id); // 排序
+    // });
+    // console.log(list);
     //console.log(chunk(list, paginator));
     obj = chunk(list, paginator);
     detail_ajax = $.when(ajax_get_template("template/detail.html")).done(function(data){
