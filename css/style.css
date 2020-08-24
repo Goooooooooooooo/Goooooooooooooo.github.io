@@ -112,7 +112,7 @@ header .navbar-brand b {
   justify-content: center;
   overflow-y: auto;
   overflow-x: hidden;
-  align-content: flex-start
+  align-content: center;
 }
 
 .menu-list .list-group-item {
