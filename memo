@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clock</title>
+
+  <style>
+    *{
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      background: #191919;
+    }
+    #app {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+    }
+    #clock_container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: auto;
+      height: 350px;
+      border: 5px solid #5d5d5d;
+      border-radius: 15px;
+      background: #242424;
+      padding: 10px;
+      padding-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .box {
+      height: 95%;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      font-size: 250px;
+      margin: 5px;
+      padding: 5px;
+      color:darkgrey;
+      flex-basis: 27%;
+    }
+    #clock_d, #clock_w {
+      color:darkgrey;
+      background: transparent;
+      font-size: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="clock_container">
+      <div style="display: contents;">
+        <div class="box" id="clock_h">00</div>
+        <div style="font-size: 100px;background: transparent;color:darkgrey;">:</div>
+        <div class="box" id="clock_m">00</div>
+        <div style="font-size: 100px;background: transparent;color:darkgrey;">:</div>
+        <div class="box" id="clock_s">00</div>
+      </div>
+      <div id="clock_d"></div><div style="margin-left: 30px;" id="clock_w"></div>
+    </div>
+  </div>
+
+  <script>
+
+    let week = [ "日", "一", "二", "三", "四", "五", "六" ];
+
+    function setDate() {
+      const h = document.querySelector("#clock_h");
+      const m = document.querySelector("#clock_m");
+      const s = document.querySelector("#clock_s");
+      const d = document.querySelector("#clock_d");
+      const w = document.querySelector("#clock_w");
+
+      let date = new Date();
+      h.innerHTML = date.getHours();
+      m.innerHTML = date.getMinutes();
+      s.innerHTML = formatDate(date.getSeconds());
+      d.innerHTML = date.getFullYear() + "年" + formatDate((date.getMonth()+1)) + "月" + formatDate(date.getDate()) + "日";
+      w.innerHTML = " 星期" + week[date.getDay()];
+    }
+
+    setDate();
+
+    setInterval(() => {
+      setDate();
+    }, 1000);
+    
+    function formatDate(date) {
+      return date.toString().length == 1 ? "0" + date : date;
+    }
+  </script>
+
+</body>
+
+</html>
