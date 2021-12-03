@@ -26,29 +26,43 @@
       justify-content: center;
       align-items: center;
       width: auto;
-      height: 300px;
       border: 5px solid #5d5d5d;
       border-radius: 15px;
       background: #242424;
       padding: 10px;
-      padding-bottom: 30px;
       flex-wrap: wrap;
     }
     .box {
-      height: 95%;
       border-radius: 10px;
       display: flex;
       align-items: center;
+      justify-content: center;
       font-size: 150px;
       margin: 5px;
       padding: 5px;
       color:darkgrey;
-      width: 195px;
+      flex-basis: 29%;
     }
     #clock_d, #clock_w {
       color:darkgrey;
       background: transparent;
       font-size: 25px;
+    }
+    .diver {
+      font-size: 100px;
+      background: transparent;
+      color:darkgrey;
+    }
+    @media screen and (orientation: portrait) { /* 竖屏 */
+      .diver {
+        display: none; 
+      }
+      .box {
+        flex-basis: 64%;
+      }
+    }
+    @media screen and (orientation:landscape) { /* 横屏 */
+
     }
   </style>
 </head>
@@ -58,9 +72,9 @@
     <div id="clock_container">
       <div style="display: contents;">
         <div class="box" id="clock_h">00</div>
-        <div style="font-size: 100px;background: transparent;color:darkgrey;">:</div>
+        <div class="diver">:</div>
         <div class="box" id="clock_m">00</div>
-        <div style="font-size: 100px;background: transparent;color:darkgrey;">:</div>
+        <div class="diver">:</div>
         <div class="box" id="clock_s">00</div>
       </div>
       <br>
@@ -80,8 +94,8 @@
       const w = document.querySelector("#clock_w");
 
       let date = new Date();
-      h.innerHTML = date.getHours();
-      m.innerHTML = date.getMinutes();
+      h.innerHTML = formatDate(date.getHours());
+      m.innerHTML = formatDate(date.getMinutes());
       s.innerHTML = formatDate(date.getSeconds());
       d.innerHTML = date.getFullYear() + "年" + formatDate((date.getMonth()+1)) + "月" + formatDate(date.getDate()) + "日";
       w.innerHTML = " 星期" + week[date.getDay()];
