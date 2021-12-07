@@ -27,6 +27,7 @@
       justify-content: center;
       align-items: center;
       width: auto;
+      max-width: 1000px;
       border: 5px solid #5d5d5d;
       border-radius: 15px;
       background: #242424;
@@ -42,9 +43,9 @@
       margin: 5px;
       padding: 5px;
       color:darkgrey;
-      flex-basis: 29%;
+      flex-basis: 27%;
     }
-    #clock_d, #clock_w {
+    #clock_d, #clock_w, #weather {
       color:darkgrey;
       background: transparent;
       font-size: 25px;
@@ -79,7 +80,11 @@
         <div class="box" id="clock_s">00</div>
       </div>
       <br>
-      <div id="clock_d"></div><div style="margin-left: 30px;" id="clock_w"></div>
+      <div style="display: contents;">
+        <div id="clock_d"></div>
+        <div style="margin-left: 30px;" id="clock_w"></div>
+        <div style="margin-left: 30px;" id="weather"></div>
+      </div>
     </div>
   </div>
 
@@ -87,30 +92,55 @@
 
     let week = [ "日", "一", "二", "三", "四", "五", "六" ];
 
-    function setDate() {
+    function setTime() {
       const h = document.querySelector("#clock_h");
       const m = document.querySelector("#clock_m");
       const s = document.querySelector("#clock_s");
+
+      let date = new Date();
+
+      h.innerHTML = formatDate(date.getHours());
+      m.innerHTML = formatDate(date.getMinutes());
+      s.innerHTML = formatDate(date.getSeconds());
+    }
+
+    function setDate() {
       const d = document.querySelector("#clock_d");
       const w = document.querySelector("#clock_w");
 
       let date = new Date();
-      h.innerHTML = formatDate(date.getHours());
-      m.innerHTML = formatDate(date.getMinutes());
-      s.innerHTML = formatDate(date.getSeconds());
-      d.innerHTML = date.getFullYear() + "年" + formatDate((date.getMonth()+1)) + "月" + formatDate(date.getDate()) + "日";
-      w.innerHTML = " 星期" + week[date.getDay()];
+
+      d.innerHTML = date.getFullYear() + "/" + formatDate((date.getMonth()+1)) + "/" + formatDate(date.getDate());
+      w.innerHTML = "(" + week[date.getDay()] + ")";
     }
 
+    function getWeather() {
+      // navigator.geolocation.getCurrentPosition(function(position) {
+      //   console.log(position.coords.latitude, position.coords.longitude);
+      // });
+      fetch("https://api.open-meteo.com/v1/forecast?latitude=35.6785&longitude=139.6823&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        console.log(data.daily.temperature_2m_max[0], data.daily.temperature_2m_min[0], data.daily.weathercode[0]);
+        const w = document.querySelector("#weather");
+        w.innerHTML = data.daily.temperature_2m_min[0] + "~" + data.daily.temperature_2m_max[0];
+      });
+    }
+
+    setTime();
     setDate();
+    getWeather();
 
     setInterval(() => {
-      setDate();
+      setTime();
     }, 1000);
     
     function formatDate(date) {
       return date.toString().length == 1 ? "0" + date : date;
     }
+
+
   </script>
 
 </body>
