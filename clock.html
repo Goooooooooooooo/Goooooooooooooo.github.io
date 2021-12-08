@@ -98,10 +98,17 @@
       const s = document.querySelector("#clock_s");
 
       let date = new Date();
+      const hours = formatDate(date.getHours());
+      const minutes = formatDate(date.getMinutes());
+      const seconds = formatDate(date.getSeconds());
+      h.innerHTML = hours;
+      m.innerHTML = minutes;
+      s.innerHTML = seconds;
 
-      h.innerHTML = formatDate(date.getHours());
-      m.innerHTML = formatDate(date.getMinutes());
-      s.innerHTML = formatDate(date.getSeconds());
+      if(hours == "00" && minutes == "00" && seconds == "00") {
+        setDate();
+        getWeather();
+      }
     }
 
     function setDate() {
