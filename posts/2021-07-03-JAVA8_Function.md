@@ -112,6 +112,7 @@ assertEquals("'5'", quoteIntToString.apply(5));
 
 1. 定义函数
 定义一个抛出异常的形式的函数式接口，这个接口只有参数没有返回值是个消费型接口。
+
 ```java
 /**
  * 抛异常接口
@@ -128,8 +129,10 @@ public interface ThrowExceptionFunction {
     void throwMessage(String message);
 }
 ```
+
 2. 编写判断方法
 创建工具类`VUtils`并创建一个`isTure`方法，方法的返回值为刚才定义的函数式接口-`ThrowExceptionFunction`。`ThrowExceptionFunction`的接口实现逻辑为当参数b为true时抛出异常
+
 ```java
 /**
  *  如果参数为true抛出异常
@@ -146,6 +149,7 @@ public static ThrowExceptionFunction isTure(boolean b){
     };
 }
 ```
+
 3. 使用方式
 调用工具类参数参数后，调用`函数式接口`的`throwMessage`方法传入异常信息。当出入的参数为`false`时正常执行。
 
@@ -188,8 +192,10 @@ public interface BranchHandle {
 
 }
 ```
+
 2. 编写判断方法
 创建一个名为`isTureOrFalse`的方法，方法的返回值为刚才定义的函数式接口-`BranchHandle`。
+
 ```java
 /**
  * 参数为true或false时，分别进行不同的操作 
@@ -208,6 +214,7 @@ public static BranchHandle isTureOrFalse(boolean b){
     };
 }
 ```
+
 3. 使用方式
 参数为`true`时，执行`trueHandle`。
 参数为`false`时，执行`falseHandle`。
@@ -228,6 +235,7 @@ void isTrueOrFalse() {
 
 1. 定义函数
 创建一个名为`PresentOrElseHandler`的函数式接口，接口的参数一个为`Consumer`接口。一个为`Runnable`,分别代表值不为空时执行消费操作和值为空时执行的其他操作
+
 ```java
 /**
  * 空值与非空值分支处理
@@ -246,8 +254,10 @@ public interface PresentOrElseHandler<T extends Object> {
    
 }
 ```
+
 2. 编写判断方法
 创建一个名为`isBlankOrNoBlank`的方法，方法的返回值为刚才定义的函数式接口-`PresentOrElseHandler`。
+
 ```java
 /**
  * 参数为true或false时，分别进行不同的操作
@@ -266,6 +276,7 @@ public static PresentOrElseHandler<?> isBlankOrNoBlank(String str){
     };
 }
 ```
+
 3. 使用方式
 调用工具类参数参数后，调用函数式接口的`presentOrElseHandle`方法传入一个`Consumer和Runnable`。
 
