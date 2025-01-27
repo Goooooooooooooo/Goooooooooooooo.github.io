@@ -8,7 +8,7 @@ var list_render; // list.html template
 var detail_render; // detail.html template
 var contact_render; // contact.html template
 var about_render; // about.html template
-var keyword = ['#home','#myBlog','#about','#contact'];
+var keyword = ['#home','#myBlog','#contact'];
 var reg = new RegExp("detail_[0-9]{1,}");
 var detail_ajax;
 
