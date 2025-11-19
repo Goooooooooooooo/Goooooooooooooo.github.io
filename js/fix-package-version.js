@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /**
- * 🧰 固定依赖版本脚本（Yarn 1 / Turbo 通用）
- * - 去除所有 package.json 中 ^ 和 ~
- * - 实时进度条显示
- * - 跨平台无依赖
+ * 🧰 固定依赖版本脚本（增强版）
+ * - 递归处理所有依赖字段（支持嵌套 like overrides/resolutions）
+ * - 去除 ^ 和 ~ 等前缀
+ * - 无依赖 / 跨平台
+ * - 带进度条
  */
 
 const fs = require("fs");
 const path = require("path");
 const ROOT = process.cwd();
-const TARGET_KEYS = ["dependencies", "devDependencies", "peerDependencies"];
+
 const IGNORE_DIRS = [
   "node_modules",
   ".git",
@@ -21,7 +22,18 @@ const IGNORE_DIRS = [
   ".cache",
 ];
 
-// ====== 获取所有 package.json 路径 ======
+// ======================= 通用字段 =======================
+const TOP_LEVEL_TARGET_KEYS = [
+  "dependencies",
+  "devDependencies",
+  "peerDependencies",
+  "optionalDependencies",
+  "bundledDependencies",
+  "resolutions",
+  "overrides",
+];
+
+// ======================= 获取所有 package.json =======================
 function getAllPackageJsonPaths(dir) {
   const result = [];
   function walk(current) {
@@ -40,28 +52,72 @@ function getAllPackageJsonPaths(dir) {
   return result;
 }
 
-// ====== 修正依赖版本 ======
+// ======================= 递归处理对象中的版本号 =======================
+function cleanVersionValue(value) {
+  if (typeof value !== "string") return value;
+
+  // 去除 ^、~、>=、<=、>、<、* 等前缀
+  return value.replace(/^[~^><=*\s]+/, "");
+}
+
+/**
+ * 递归遍历对象，清洗所有字符串版本号
+ */
+function processVersionObject(obj) {
+  if (!obj || typeof obj !== "object") return { changed: false };
+
+  let changed = false;
+
+  for (const key of Object.keys(obj)) {
+    const val = obj[key];
+
+    if (typeof val === "string") {
+      const cleaned = cleanVersionValue(val);
+      if (cleaned !== val) {
+        obj[key] = cleaned;
+        changed = true;
+      }
+    } else if (typeof val === "object") {
+      // 递归处理嵌套对象
+      const nested = processVersionObject(val);
+      if (nested.changed) changed = true;
+    }
+  }
+
+  return { changed };
+}
+
+// ======================= 处理单个 package.json =======================
 function fixPackageJson(filePath) {
   try {
     const content = fs.readFileSync(filePath, "utf8");
     const pkg = JSON.parse(content);
+
     let changed = false;
 
-    for (const key of TARGET_KEYS) {
-      if (!pkg[key]) continue;
-      for (const dep in pkg[key]) {
-        const v = pkg[key][dep];
-        const fixed = v.replace(/^[\^~]/, "");
-        if (v !== fixed) {
-          pkg[key][dep] = fixed;
-          changed = true;
-        }
+    // 处理顶层 dependencies/overrides/resolutions
+    for (const key of TOP_LEVEL_TARGET_KEYS) {
+      if (pkg[key] && typeof pkg[key] === "object") {
+        const r = processVersionObject(pkg[key]);
+        if (r.changed) changed = true;
       }
     }
+
+    // Workspaces 或其他结构可能也含有依赖（例如 turbo 的 extra configs）
+    if (pkg.workspaces && typeof pkg.workspaces === "object") {
+      const r = processVersionObject(pkg.workspaces);
+      if (r.changed) changed = true;
+    }
+
+    // 万一 package.json 中还有其它结构中含有 "version" 等字段，也处理
+    const all = processVersionObject(pkg);
+
+    if (all.changed) changed = true;
 
     if (changed) {
       fs.writeFileSync(filePath, JSON.stringify(pkg, null, 2) + "\n");
     }
+
     return changed;
   } catch (err) {
     console.warn(`⚠️  Failed to process ${filePath}: ${err.message}`);
@@ -69,7 +125,7 @@ function fixPackageJson(filePath) {
   }
 }
 
-// ====== 渲染进度条 ======
+// ======================= 渲染进度条 =======================
 function renderProgress(current, total, currentFile) {
   const width = 40;
   const percent = current / total;
@@ -81,7 +137,7 @@ function renderProgress(current, total, currentFile) {
   if (current === total) process.stdout.write("\n");
 }
 
-// ====== 主逻辑 ======
+// ======================= 主逻辑 =======================
 function main() {
   const start = Date.now();
   console.log("🔍 Searching for package.json files...");
@@ -105,5 +161,5 @@ function main() {
   console.log(`\n✨ Done! ${fixedCount} file(s) modified in ${time}s.\n`);
 }
 
-// ====== 执行 ======
+// ======================= 执行 =======================
 main();
