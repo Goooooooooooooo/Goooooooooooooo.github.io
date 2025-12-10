@@ -1,33 +1,236 @@
-请根据以下要件，设计一个「カラム単位の入力検証／ビジネスルール検証」功能的完整技术方案。
-请使用 Markdown 格式 输出结果。
+# 【Zod + isolated-vm 技術設計書（日本語版）】
 
-⸻
+# 1. 概要
+本ドキュメントは、CRUD アプリケーションにおける **入力バリデーション（Input Validation）** および **業務ロジックバリデーション（Business Rule Validation）** を実現するための技術設計を示す。
 
-要件
-	•	JavaScript で書く Input Validation / Business Rule の２種類のスクリプト
-	•	Monaco Editor で編集
-	•	AI によるスクリプト自動生成（品質保証が必要）
-	•	３階層の有効・無効フラグ（全体・入力検証・ビジネスルール）
-	•	CRUD アプリのフォーム送信時に実行
-	•	スクリプト保存先：validation_scripts テーブル
-	•	実行結果はエラーとして画面へ返却
+本システムでは、以下の 2 層構造で検証機能を提供する：
 
-⸻
+1. **Zod Schema**  
+   - 画面の入力値に対する型・形式チェック  
+   - 軽量、即時、堅牢なバリデーション  
+2. **isolated-vm（JavaScript サンドボックス）**  
+   - ユーザーが入力・生成した複雑ロジックの安全実行  
+   - DBクエリ、クロスフィールドチェック等の実行  
 
-输出内容（请全部覆盖）
+ユーザーは以下の 2 つの方法で検証ロジックを作成できる：
+- 直接 JavaScript を編集（Monaco Editor 提供）
+- 自然言語 → LLM → 構造化ロジック（JS または DSL）
 
-请按 Markdown 结构提供以下内容：
-	1.	功能的目的与价值
-	2.	潜在风险与危险性（JS 任意执行、XSS、RCE、無限ループ、AI生成コード問題 等）
-	3.	实现时的注意点（安全、性能、UX、DX、AI ガードレール 等）
-	4.	最佳架构与技术栈
-	•	JS Sandbox（vm2 / isolated-vm / Web Worker）
-	•	静的解析（AST, ESLint, TypeScript check）
-	•	Monaco Editor 集成
-	•	フロント／バックの役割分担
-	5.	执行フロー图
-	6.	AI 生成脚本的处理流程（プロンプト設計・安全制限・代码検証）
-	7.	validation_scripts 表结构的推荐设计
-	8.	运行与监控方式（ログ、実行时间、エラー、変更履歴）
-	9.	可替代方案（JSONLogic / rule engine / DSL）
-	10.	最终的最佳实践建议
+---
+
+# 2. 全体アーキテクチャ
+┌──────────────────────────────┐
+│          フロントエンド（React）          │
+│   - フォーム入力                         │
+│   - Zod Schema による即時バリデーション      │
+│   - エディタ（Monaco）                    │
+│   - 検証結果のユーザー提示                │
+└──────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────┐
+│        バックエンド（Node.js）          │
+│ 1. Zod Schema による最終チェック          │
+│ 2. isolated-vm によるロジック実行        │
+│ 3. DB・API アクセスを安全にラップ         │
+│ 4. ログ・監査・タイムアウト制御           │
+└──────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────┐
+│   validation_scripts テーブル         │
+│   - スクリプト/DSL/設定の永続化        │
+└──────────────────────────────┘
+
+---
+
+# 3. 技術スタック
+
+| 種類 | 採用技術 | 理由 |
+|------|---------|------|
+| 入力バリデーション | **Zod** | 型安全・TS連携・高速・フロント/バック両対応 |
+| 複雑ロジック実行 | **isolated-vm** | Node.js で最も安全で高速なサンドボックス |
+| エディタ | **Monaco Editor** | VSCode と同等の編集体験 |
+| LLM | **OpenAI API / Claude API** | 自然言語 → 構造化ロジック生成 |
+| DB | MySQL / PostgreSQL | トランザクション管理と柔軟性 |
+| 設定保存 | `validation_scripts` テーブル | スクリプトのバージョン管理・有効化フラグ |
+
+---
+
+# 4. Zod による入力バリデーション設計
+
+## 4.1 基本方針
+- 全フォーム項目を **自動生成された Zod Schema** で検証
+- フロント：リアルタイムエラー  
+- バック：安全保障として再検証  
+- カラム単位のルールは schema へ自動反映
+
+## 4.2 サンプル
+```ts
+const FormSchema = z.object({
+  name: z.string().min(1),
+  age: z.number().int().min(0),
+  amount: z.number().positive(),
+  userId: z.string().uuid()
+});
+
+5. isolated-vm による業務ロジックバリデーション
+
+5.1 実行モデル
+
+isolated-vm でユーザースクリプトを安全実行：
+
+exposed API（安全ラップされた API）
+{
+  getField(name)  
+  setError(message)
+  db: {
+    exists(table, id)
+    findOne(...)
+    customQuery(...)
+  },
+  util: {
+    today()
+    diffDays(date1, date2)
+    log(...)
+  }
+}
+スクリプト例
+const age = getField("age");
+if (age < 18) {
+  return setError("未成年は登録できません");
+}
+
+const exists = await db.exists("users", getField("userId"));
+if (!exists) {
+  return setError("ユーザーが存在しません");
+}
+
+return null;
+
+5.2 安全機構
+制御
+内容
+CPU 制限
+タイムアウト（例：300ms）
+メモリ制限
+8〜32MB
+API ホワイトリスト
+DB / 外部 API は明示許可したものだけ
+無限ループ対策
+タイムアウト + AST 静的解析
+console ログ
+sandbox-log に記録
+
+
+6. LLM によるロジック生成フロー
+自然言語（ユーザー入力）
+      ↓
+LLM（OpenAI / Claude）
+      ↓
+構造化ロジック（DSL or JS）
+      ↓
+文法チェック（AST + Zod Schema）
+      ↓
+isolated-vm エンジンに保存
+
+7. LLM Prompt テンプレート（日本語）
+
+プロンプト：自然言語 → JavaScript 検証ロジック
+あなたは業務ロジックバリデーションの専門エンジニアです。
+
+【目的】
+ユーザーの自然言語の要望を基に、以下仕様の JavaScript 検証スクリプトを生成してください。
+
+【条件】
+- スクリプトは isolated-vm 内で実行される
+- 利用可能な API は以下のみ：
+  getField(name)
+  setError(message)
+  db.exists(table, id)
+  db.findOne(params)
+  util.today()
+  util.diffDays(date1, date2)
+- Node.js 標準 API、外部ライブラリは禁止
+- 副作用禁止
+- return setError("メッセージ") 形式でエラーを返す
+- 無限ループ禁止
+
+【入力】
+「{{USER_MESSAGE}}」
+
+【出力形式】
+```js
+// バリデーションスクリプト
+{{GENERATED_SCRIPT}}
+
+---
+
+# 8. DB スキーマ（validation_scripts）
+
+```sql
+CREATE TABLE validation_scripts (
+  id              BIGINT PRIMARY KEY AUTO_INCREMENT,
+  app_id          BIGINT NOT NULL,
+  field           VARCHAR(255) NULL,  -- null = フォーム全体
+  type            ENUM('input', 'business') NOT NULL,
+  script          TEXT NOT NULL,
+  enabled         BOOLEAN DEFAULT TRUE,
+  version         INT DEFAULT 1,
+  created_at      DATETIME NOT NULL,
+  updated_at      DATETIME NOT NULL
+);
+
+9. 検証実行フロー（詳細）
+	1.	フロント Zod → 入力の基本チェック
+	2.	バック Zod → 再検証
+	3.	validation_scripts をロード
+	4.	isolated-vm で個別スクリプトを順次実行
+	5.	setError が返れば即終了
+	6.	問題なければ保存処理へ進む
+	7.	ログや監査テーブルへ記録
+
+10. ログ・監査項目
+script_id
+実行したスクリプト
+app_id
+対象アプリ
+input_snapshot
+入力データ JSON
+execution_time_ms
+実行時間
+success
+true/false
+error_message
+エラー内容
+
+11. セキュリティリスクと対策
+リスク
+対策
+無限ループ
+タイムアウト + 静的解析
+悪意 JS
+isolated-vm で隔離
+DB 暴走クエリ
+API レートリミット
+外部モジュール注入
+require を完全封印
+重い演算
+CPU 制限
+
+12. 拡張性
+	•	バージョニング
+	•	ルールの A/B テスト
+	•	テナント別サンドボックス
+	•	ロジック可視化 UI
+	•	バリデーションのテストランナー
+
+13. 結論（推奨アーキテクチャ）
+
+軽量・高速・安全 → Zod
+柔軟・拡張性 → isolated-vm
+ユーザー向け体験 → LLM + Monaco Editor
+
+本組み合わせは、
+「アプリごと・ユーザーごとに異なる複雑なバリデーション要求」
+を最も安全かつ拡張可能に実現するアーキテクチャである。
