@@ -1,236 +1,136 @@
-# 【Zod + isolated-vm 技術設計書（日本語版）】
+你现在的角色是“表单运行时系统实现工程师（Form Runtime System Engineer）”。
 
-# 1. 概要
-本ドキュメントは、CRUD アプリケーションにおける **入力バリデーション（Input Validation）** および **業務ロジックバリデーション（Business Rule Validation）** を実現するための技術設計を示す。
+你的任务是：实现一个完整的 Form Runtime 体系，用于增强现有基于 ui-config 的表单渲染系统。
+当前项目中已经存在 ui-config → Form 的渲染逻辑，你的实现必须可以无侵入集成，
+不得要求重写或替换现有表单渲染实现。
 
-本システムでは、以下の 2 層構造で検証機能を提供する：
+====================
+【总体目标】
+====================
 
-1. **Zod Schema**  
-   - 画面の入力値に対する型・形式チェック  
-   - 軽量、即時、堅牢なバリデーション  
-2. **isolated-vm（JavaScript サンドボックス）**  
-   - ユーザーが入力・生成した複雑ロジックの安全実行  
-   - DBクエリ、クロスフィールドチェック等の実行  
+- 在页面级别通过 Provider 启用表单运行时能力
+- 在字段渲染阶段注册字段、校验规则、业务规则
+- 在运行时根据 onChange / onBlur / onSubmit 统一调度规则
+- UI 组件保持“无业务逻辑、无校验逻辑”
 
-ユーザーは以下の 2 つの方法で検証ロジックを作成できる：
-- 直接 JavaScript を編集（Monaco Editor 提供）
-- 自然言語 → LLM → 構造化ロジック（JS または DSL）
+====================
+【不可协商的架构约束】
+====================
 
----
+1. Zod 校验
+- Zod schema 仅在表单初始化阶段构建一次
+- 通过统一入口执行校验（不得在 Field 或 UI 层执行）
+- Zod 校验不属于 UI 或 Field 组件职责
 
-# 2. 全体アーキテクチャ
-┌──────────────────────────────┐
-│          フロントエンド（React）          │
-│   - フォーム入力                         │
-│   - Zod Schema による即時バリデーション      │
-│   - エディタ（Monaco）                    │
-│   - 検証結果のユーザー提示                │
-└──────────────────────────────┘
-                │
-                ▼
-┌──────────────────────────────┐
-│        バックエンド（Node.js）          │
-│ 1. Zod Schema による最終チェック          │
-│ 2. isolated-vm によるロジック実行        │
-│ 3. DB・API アクセスを安全にラップ         │
-│ 4. ログ・監査・タイムアウト制御           │
-└──────────────────────────────┘
-                │
-                ▼
-┌──────────────────────────────┐
-│   validation_scripts テーブル         │
-│   - スクリプト/DSL/設定の永続化        │
-└──────────────────────────────┘
+2. Business Rule（业务规则）
+- 以 JavaScript 脚本形式声明在 ui-config 中
+- 在字段渲染阶段只进行注册，不得执行
+- 只能由中央 Form Runtime 统一调度执行
+- 支持触发时机：onChange / onBlur / onSubmit
+- 脚本必须通过受控 Function 执行，禁止使用 eval
 
----
+3. Field（字段集成点）
+- Field 不是新的表单体系，只是“注册壳”
+- 可作为组件或函数形式存在
+- 只负责在渲染阶段向 Runtime 注册字段配置
+- 不包含任何校验或业务规则执行逻辑
 
-# 3. 技術スタック
+4. Form Runtime Provider
+- 页面级启用运行时能力
+- 使用 React Context 提供 Runtime 实例
+- Provider 本身不渲染任何表单 UI
+- 未被 Provider 包裹时，useFormRuntime 必须抛出错误
 
-| 種類 | 採用技術 | 理由 |
-|------|---------|------|
-| 入力バリデーション | **Zod** | 型安全・TS連携・高速・フロント/バック両対応 |
-| 複雑ロジック実行 | **isolated-vm** | Node.js で最も安全で高速なサンドボックス |
-| エディタ | **Monaco Editor** | VSCode と同等の編集体験 |
-| LLM | **OpenAI API / Claude API** | 自然言語 → 構造化ロジック生成 |
-| DB | MySQL / PostgreSQL | トランザクション管理と柔軟性 |
-| 設定保存 | `validation_scripts` テーブル | スクリプトのバージョン管理・有効化フラグ |
+5. 与现有系统的关系
+- 不修改现有 ui-config 结构
+- 不修改现有 Form Renderer 的核心逻辑
+- 仅通过包裹 Provider / 注册壳完成集成
 
----
+====================
+【接口定义（不可修改）】
+====================
 
-# 4. Zod による入力バリデーション設計
-
-## 4.1 基本方針
-- 全フォーム項目を **自動生成された Zod Schema** で検証
-- フロント：リアルタイムエラー  
-- バック：安全保障として再検証  
-- カラム単位のルールは schema へ自動反映
-
-## 4.2 サンプル
 ```ts
-const FormSchema = z.object({
-  name: z.string().min(1),
-  age: z.number().int().min(0),
-  amount: z.number().positive(),
-  userId: z.string().uuid()
-});
-
-5. isolated-vm による業務ロジックバリデーション
-
-5.1 実行モデル
-
-isolated-vm でユーザースクリプトを安全実行：
-
-exposed API（安全ラップされた API）
-{
-  getField(name)  
-  setError(message)
-  db: {
-    exists(table, id)
-    findOne(...)
-    customQuery(...)
-  },
-  util: {
-    today()
-    diffDays(date1, date2)
-    log(...)
-  }
-}
-スクリプト例
-const age = getField("age");
-if (age < 18) {
-  return setError("未成年は登録できません");
+interface FieldConfig {
+  name: string;
+  zod?: ZodTypeAny;
+  businessRules?: BusinessRule[];
 }
 
-const exists = await db.exists("users", getField("userId"));
-if (!exists) {
-  return setError("ユーザーが存在しません");
+interface BusinessRule {
+  trigger: "onChange" | "onBlur" | "onSubmit";
+  watch?: string[];
+  script: string;
 }
+```
 
-return null;
+====================
+【系统组成（必须全部实现）】
+	1.	FormRuntimeCore
 
-5.2 安全機構
-制御
-内容
-CPU 制限
-タイムアウト（例：300ms）
-メモリ制限
-8〜32MB
-API ホワイトリスト
-DB / 外部 API は明示許可したものだけ
-無限ループ対策
-タイムアウト + AST 静的解析
-console ログ
-sandbox-log に記録
+	•	字段注册 / 注销
+	•	Business Rule 注册表（按 trigger + watch 组织）
+	•	规则调度与执行
+	•	防止重复执行与基础循环保护
 
+	2.	FormRuntimeProvider
 
-6. LLM によるロジック生成フロー
-自然言語（ユーザー入力）
-      ↓
-LLM（OpenAI / Claude）
-      ↓
-構造化ロジック（DSL or JS）
-      ↓
-文法チェック（AST + Zod Schema）
-      ↓
-isolated-vm エンジンに保存
+	•	创建并持有唯一 Runtime 实例
+	•	管理 Runtime 生命周期
+	•	通过 Context + Hook 暴露 Runtime
 
-7. LLM Prompt テンプレート（日本語）
+	3.	useFormRuntime Hook
 
-プロンプト：自然言語 → JavaScript 検証ロジック
-あなたは業務ロジックバリデーションの専門エンジニアです。
+	•	仅允许在 Provider 内使用
+	•	Provider 外调用必须抛出明确错误
 
-【目的】
-ユーザーの自然言語の要望を基に、以下仕様の JavaScript 検証スクリプトを生成してください。
+	4.	Zod 校验集成
 
-【条件】
-- スクリプトは isolated-vm 内で実行される
-- 利用可能な API は以下のみ：
-  getField(name)
-  setError(message)
-  db.exists(table, id)
-  db.findOne(params)
-  util.today()
-  util.diffDays(date1, date2)
-- Node.js 標準 API、外部ライブラリは禁止
-- 副作用禁止
-- return setError("メッセージ") 形式でエラーを返す
-- 無限ループ禁止
+	•	在 Runtime 初始化阶段构建 schema
+	•	提供统一校验执行入口
+	•	校验在 submit 或指定时机执行
 
-【入力】
-「{{USER_MESSAGE}}」
+	5.	Field 注册方案（至少提供一种）
 
-【出力形式】
-```js
-// バリデーションスクリプト
-{{GENERATED_SCRIPT}}
+	•	组件形式（如 FormField）
+或
+	•	函数式集成到现有 renderField / renderForm 中
+【使用方式示例（不可修改语义）】
 
----
+页面级启用：
+<FormRuntimeProvider>
+  {renderForm(uiConfig)}
+</FormRuntimeProvider>
 
-# 8. DB スキーマ（validation_scripts）
+字段渲染阶段注册（示例之一）：
+runtime.registerField(fieldConfig);
 
-```sql
-CREATE TABLE validation_scripts (
-  id              BIGINT PRIMARY KEY AUTO_INCREMENT,
-  app_id          BIGINT NOT NULL,
-  field           VARCHAR(255) NULL,  -- null = フォーム全体
-  type            ENUM('input', 'business') NOT NULL,
-  script          TEXT NOT NULL,
-  enabled         BOOLEAN DEFAULT TRUE,
-  version         INT DEFAULT 1,
-  created_at      DATETIME NOT NULL,
-  updated_at      DATETIME NOT NULL
-);
+====================
+【实现顺序（必须严格遵守）】
 
-9. 検証実行フロー（詳細）
-	1.	フロント Zod → 入力の基本チェック
-	2.	バック Zod → 再検証
-	3.	validation_scripts をロード
-	4.	isolated-vm で個別スクリプトを順次実行
-	5.	setError が返れば即終了
-	6.	問題なければ保存処理へ進む
-	7.	ログや監査テーブルへ記録
+Step 1：
+实现 FormRuntimeCore（不涉及 UI，不涉及 React）
 
-10. ログ・監査項目
-script_id
-実行したスクリプト
-app_id
-対象アプリ
-input_snapshot
-入力データ JSON
-execution_time_ms
-実行時間
-success
-true/false
-error_message
-エラー内容
+Step 2：
+实现 FormRuntimeProvider 与 useFormRuntime（Context + 生命周期）
 
-11. セキュリティリスクと対策
-リスク
-対策
-無限ループ
-タイムアウト + 静的解析
-悪意 JS
-isolated-vm で隔離
-DB 暴走クエリ
-API レートリミット
-外部モジュール注入
-require を完全封印
-重い演算
-CPU 制限
+Step 3：
+集成 Zod 校验调度逻辑
 
-12. 拡張性
-	•	バージョニング
-	•	ルールの A/B テスト
-	•	テナント別サンドボックス
-	•	ロジック可視化 UI
-	•	バリデーションのテストランナー
+Step 4：
+实现 Business Rule 执行机制（onChange / onBlur / onSubmit）
 
-13. 結論（推奨アーキテクチャ）
+Step 5：
+展示如何与现有 ui-config Form 渲染系统集成（最小示例）
 
-軽量・高速・安全 → Zod
-柔軟・拡張性 → isolated-vm
-ユーザー向け体験 → LLM + Monaco Editor
+====================
+【输出要求】
+	•	输出完整实现代码（按模块拆分）
+	•	代码需可读、可维护
+	•	不要省略关键逻辑
+	•	不要引入未说明的第三方库
 
-本組み合わせは、
-「アプリごと・ユーザーごとに異なる複雑なバリデーション要求」
-を最も安全かつ拡張可能に実現するアーキテクチャである。
+如果你在实现过程中违反任一架构约束：
+	•	立即停止
+	•	明确指出违反的约束
+	•	重新实现
