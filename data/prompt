@@ -213,3 +213,34 @@ Step 5：
 - 明确指出缺失点
 - 说明这些信息会影响哪些判断
 - 不要自行假设
+
+
+
+// 1. 初始化刷新标记：页面加载/显示时设置为true（刷新会触发，关闭不会）
+window.addEventListener('pageshow', (e) => {
+  // 排除BF缓存恢复场景，不影响标记
+  if (!e.persisted) {
+    sessionStorage.setItem('isRefreshing', 'true');
+  }
+});
+
+// 2. 核心：监听页面卸载，延迟判断是否为关闭（关键：利用刷新的pageshow回调会覆盖）
+window.addEventListener('beforeunload', (e) => {
+  // 延迟执行：给刷新的pageshow留时间清除标记，关闭则无此步骤
+  setTimeout(() => {
+    const isRefreshing = sessionStorage.getItem('isRefreshing') === 'true';
+    // 仅当「不是刷新」时，执行关闭标签的处理逻辑
+    if (!isRefreshing) {
+      console.log('✅ 标签页被关闭，执行处理逻辑');
+      // 你的关闭处理代码：如清除后端会话、上报埋点、保存临时数据等
+      // handleTabClose(); 
+    }
+    // 无论是否关闭，最后清除标记，避免残留
+    sessionStorage.removeItem('isRefreshing');
+  }, 0);
+});
+
+// 3. 页面加载完成后，重置标记（兜底，避免异常场景残留）
+window.addEventListener('load', () => {
+  sessionStorage.setItem('isRefreshing', 'false');
+});
