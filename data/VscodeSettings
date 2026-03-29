@@ -1,0 +1,47 @@
+{
+  // ========== 核心：全局指令文件生效配置（必须开启） ==========
+  "chat.instructionsFilesLocations": {
+    ".github/instructions": true,
+    "~/.copilot": true
+  },
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+
+  // ========== Copilot 核心行为固定配置 ==========
+  "editor.inlineSuggest.enabled": true,
+  "github.copilot.editor.enableAutoCompletions": true,
+  // 固定输出随机性，数值越低越稳定，全项目输出风格统一
+  "github.copilot.advanced": {
+    "temperature": 0.2,
+    "locale": "zh-CN"
+  },
+  // 按文件类型精准控制启用状态，避免乱提示
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "jsonc": false,
+    "git-commit": true
+  },
+  // 禁用公共代码匹配，避免不可控的外部代码引入，保证规范统一
+  "github.copilot.allowPublicCodeSuggestions": false,
+
+  // ========== 聊天面板优化 ==========
+  "chat.commandCenter.enabled": true,
+  "github.copilot.chat.terminalChatLocation": "chatView",
+  "github.copilot.chat.enableCodeFenceSuggestions": true,
+
+  // ========== 编辑器配套优化（全项目统一格式） ==========
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.suggest.showWords": false,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  // ========== 可选：屏蔽干扰项 ==========
+  "github.copilot.renameSuggestions.triggerAutomatically": false,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "editor.inlineSuggest.edits.allowCodeShifting": "always",
+  "telemetry.telemetryLevel": "off"
+}
